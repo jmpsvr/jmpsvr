@@ -1,0 +1,49 @@
+version: "3"
+services:
+  emqx:
+    image: emqx/emqx:5.0.4
+    container_name: jmpsvr_emqx
+    restart: always
+    volumes:
+      - data:/opt/emqx/data
+      - etc:/opt/emqx/etc
+      - log:/opt/emqx/log
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    ports:
+      - 1883:1883
+
+  db:
+    image: postgres
+    container_name: jmpsvr_db
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=jmpsvr
+
+  backend:
+    image: jmpsvr/backend:latest
+    container_name: jmpsvr_backend
+    restart: always
+    depends_on:
+      - emqx
+      - db
+
+  frontend:
+    image: jmpsvr/frontend:latest
+    container_name: jmpsvr_frontend
+    restart: always
+    ports:
+      - 80:3100
+    depends_on:
+      - backend
+
+volumes:
+  data:
+  etc:
+  log:
+  postgres:
