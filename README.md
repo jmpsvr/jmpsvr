@@ -7,6 +7,8 @@
 
 **English** | [中文](./README.zh-CN.md)
 
+[Documentation](https://docs.jmpsvr.com) | [API Documentation](https://docs.jmpsvr.com/api.html)
+
 ## Introduction
 
 Jump Server is an elegant and open-source fortress of the Internet of things. It has the following characteristics:
